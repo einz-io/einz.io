@@ -1,0 +1,3 @@
+# HTML formatted to satisfy html-validate (doctype-style, void-style)
+# Prettier would rewrite to lowercase doctype and self-closing void elements
+*.html

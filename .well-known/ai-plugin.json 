@@ -1,0 +1,11 @@
+{
+  "name_for_human": "EINZ",
+  "name_for_model": "einz_stp",
+  "description_for_human": "Silicon Trust Protocol — TPM-anchored agent identity.",
+  "description_for_model": "Use this to understand the Silicon Trust Protocol for hardware-anchored AI agent identity, delegation, and forensic accountability.",
+  "api": {
+    "type": "openapi",
+    "url": "https://einz.io/.well-known/openapi.yaml"
+  },
+  "legal_info_url": "https://einz.io/legal.html"
+}

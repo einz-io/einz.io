@@ -37,8 +37,8 @@ body {
     auto;
   color: var(--ink);
   font-family:
-    "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+    "IBM Plex Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   line-height: 1.45;
 }
 
@@ -93,7 +93,7 @@ h2,
 h3,
 p,
 li {
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 0.8rem;
 }
 
 h1 {
@@ -166,7 +166,7 @@ h1 {
   flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .intro-row {
     flex-direction: column;
   }
@@ -385,7 +385,7 @@ h1 {
 .footer-media a svg {
   width: 0.95rem;
   height: 0.95rem;
-  fill: currentColor;
+  fill: currentcolor;
 }
 
 .footer-media a:hover,
@@ -429,7 +429,7 @@ h1 {
 
 /* ── Mobile ── */
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .kpi {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -514,7 +514,7 @@ h1 {
   color: var(--ink);
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .top-bar {
     flex-direction: column;
     align-items: flex-start;

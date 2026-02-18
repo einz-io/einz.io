@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>overview</title>
-    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-    <link rel="stylesheet" href="../assets/docs.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../assets/docs.css">
   </head>
   <body>
     <main class="wrap">
@@ -28,55 +28,55 @@
         </p>
         <h2 id="table-of-contents">Table of Contents</h2>
         <ol>
-          <li><a href="#1-executive-snapshot">Executive Snapshot</a></li>
+          <li><a href="#s1-executive-snapshot">Executive Snapshot</a></li>
           <li>
-            <a href="#2-core-architecture-identity-delegation-audit"
+            <a href="#s2-core-architecture-identity-delegation-audit"
               >Core Architecture (Identity → Delegation → Audit)</a
             >
           </li>
           <li>
-            <a href="#3-governance-and-judiciary-model"
+            <a href="#s3-governance-and-judiciary-model"
               >Governance and Judiciary Model</a
             >
           </li>
           <li>
-            <a href="#4-terms-liability-and-slashing"
+            <a href="#s4-terms-liability-and-slashing"
               >Terms, Liability, and Slashing</a
             >
           </li>
           <li>
-            <a href="#5-forensic-accountability-and-backtracking"
+            <a href="#s5-forensic-accountability-and-backtracking"
               >Forensic Accountability and Backtracking</a
             >
           </li>
           <li>
-            <a href="#6-developer-integration-path"
+            <a href="#s6-developer-integration-path"
               >Developer Integration Path</a
             >
           </li>
           <li>
-            <a href="#7-launch-readiness-and-roadmap-state"
+            <a href="#s7-launch-readiness-and-roadmap-state"
               >Launch Readiness and Roadmap State</a
             >
           </li>
           <li>
-            <a href="#8-implementation-surface-in-this-repo"
+            <a href="#s8-implementation-surface-in-this-repo"
               >Implementation Surface in This Repo</a
             >
           </li>
           <li>
-            <a href="#9-comparison-view-current-state-vs-intended-protocol"
+            <a href="#s9-comparison-view-current-state-vs-intended-protocol"
               >Comparison View: Current State vs Intended Protocol</a
             >
           </li>
           <li>
-            <a href="#10-open-questions-and-suggested-next-moves"
+            <a href="#s10-open-questions-and-suggested-next-moves"
               >Open Questions and Suggested Next Moves</a
             >
           </li>
         </ol>
-        <hr />
-        <h2 id="1-executive-snapshot">1. Executive Snapshot</h2>
+        <hr>
+        <h2 id="s1-executive-snapshot">1. Executive Snapshot</h2>
         <p>
           The current protocol vision is a
           <strong>hardware-anchored trust stack for autonomous agents</strong>:
@@ -107,10 +107,10 @@
           <strong>design and operating doctrine</strong> with selective
           proof-of-concept code snippets, not yet a full runnable platform.
         </p>
-        <h2 id="2-core-architecture-identity-delegation-audit">
+        <h2 id="s2-core-architecture-identity-delegation-audit">
           2. Core Architecture (Identity → Delegation → Audit)
         </h2>
-        <h3 id="21-identity-layer">2.1 Identity Layer</h3>
+        <h3 id="s21-identity-layer">2.1 Identity Layer</h3>
         <p>
           The system roots trust in TPM-derived keys and measured boot/PCR
           state:
@@ -128,7 +128,7 @@
             invalidate trust.
           </li>
         </ul>
-        <h3 id="22-delegation-layer">2.2 Delegation Layer</h3>
+        <h3 id="s22-delegation-layer">2.2 Delegation Layer</h3>
         <p>Delegation is framed as MCP with hardened wrapper semantics:</p>
         <ul>
           <li>
@@ -143,7 +143,7 @@
             environment metadata.
           </li>
         </ul>
-        <h3 id="23-audit-layer">2.3 Audit Layer</h3>
+        <h3 id="s23-audit-layer">2.3 Audit Layer</h3>
         <p>Audit combines cryptographic verification and semantic review:</p>
         <ul>
           <li>
@@ -158,7 +158,7 @@
             actions.
           </li>
         </ul>
-        <h2 id="3-governance-and-judiciary-model">
+        <h2 id="s3-governance-and-judiciary-model">
           3. Governance and Judiciary Model
         </h2>
         <p>
@@ -186,7 +186,7 @@
           This is notable because governance is treated as a first-class
           protocol subsystem, not an afterthought.
         </p>
-        <h2 id="4-terms-liability-and-slashing">
+        <h2 id="s4-terms-liability-and-slashing">
           4. Terms, Liability, and Slashing
         </h2>
         <p>The ToS material defines accountability aggressively:</p>
@@ -211,7 +211,7 @@
           This creates a tight coupling between technical controls and
           legal/commercial responsibility.
         </p>
-        <h2 id="5-forensic-accountability-and-backtracking">
+        <h2 id="s5-forensic-accountability-and-backtracking">
           5. Forensic Accountability and Backtracking
         </h2>
         <p>A major strength of this doc set is recursive forensic logic:</p>
@@ -237,7 +237,9 @@
           The protocol therefore targets both “was this authentic?” and “was
           this sensible?”.
         </p>
-        <h2 id="6-developer-integration-path">6. Developer Integration Path</h2>
+        <h2 id="s6-developer-integration-path">
+          6. Developer Integration Path
+        </h2>
         <p>The developer guide prescribes a fairly clean adoption flow:</p>
         <ol>
           <li>Prepare TPM/TEE-capable environment.</li>
@@ -250,7 +252,7 @@
           The onboarding narrative is coherent, though implementation details
           are still mostly reference-level.
         </p>
-        <h2 id="7-launch-readiness-and-roadmap-state">
+        <h2 id="s7-launch-readiness-and-roadmap-state">
           7. Launch Readiness and Roadmap State
         </h2>
         <p>The 30-day roadmap has clear sequencing:</p>
@@ -267,7 +269,7 @@
           <strong>planning-state roadmap</strong> rather than a completed
           milestone report.
         </p>
-        <h2 id="8-implementation-surface-in-this-repo">
+        <h2 id="s8-implementation-surface-in-this-repo">
           8. Implementation Surface in This Repo
         </h2>
         <h3 id="what-exists-now">What exists now</h3>
@@ -291,7 +293,7 @@
           <li>Live judge orchestration and replay service binaries.</li>
           <li>Automated conformance test suite for protocol guarantees.</li>
         </ul>
-        <h2 id="9-comparison-view-current-state-vs-intended-protocol">
+        <h2 id="s9-comparison-view-current-state-vs-intended-protocol">
           9. Comparison View: Current State vs Intended Protocol
         </h2>
         <table>
@@ -348,7 +350,7 @@
             </tr>
           </tbody>
         </table>
-        <h2 id="10-open-questions-and-suggested-next-moves">
+        <h2 id="s10-open-questions-and-suggested-next-moves">
           10. Open Questions and Suggested Next Moves
         </h2>
         <h3 id="open-questions">Open questions</h3>

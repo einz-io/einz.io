@@ -1,0 +1,68 @@
+{
+    "protocol": "Silicon Trust Protocol",
+    "version": "1.2",
+    "status": "specification",
+    "date": "2026-02-16",
+  
+    "identity": {
+      "anchor": ["TPM 2.0", "TEE"],
+      "key_type": "Attestation Identity Key (AIK)",
+      "binding": "TPM Endorsement Key",
+      "measured_boot": true,
+      "pcr_registers": [0, 4, 10]
+    },
+  
+    "delegation": {
+      "protocol": "MCP (Model Context Protocol)",
+      "wrapper": "Shield-MCP",
+      "session_keys": "TPM-signed, scoped",
+      "causal_linking": true,
+      "intent_binding": true
+    },
+  
+    "audit": {
+      "forensic_replay": true,
+      "evidence_format": "Signed Execution Envelope",
+      "intent_declaration_required": true,
+      "deep_audit_sample_rate": 0.02,
+      "human_in_the_loop": true
+    },
+  
+    "reputation": {
+      "model": "two-tiered",
+      "integrity_score": {
+        "source": "TPM Hardware",
+        "speed": "instant"
+      },
+      "semantic_score": {
+        "source": "Post-task audit + client feedback",
+        "speed": "24h-7d"
+      },
+      "escrow_window_hours": 48
+    },
+  
+    "governance": {
+      "slashing": true,
+      "hardware_revocation": true,
+      "global_revocation_list": true,
+      "judiciary": {
+        "judge_eligibility_score": 0.98,
+        "min_tasks": 1000,
+        "assignment": "blind-random",
+        "appeals": "human-in-the-loop"
+      }
+    },
+  
+    "transparency": {
+      "merkle_log": true,
+      "root_publication": "daily",
+      "tree_height": 32,
+      "endpoint": "https://einz.io/.well-known/stp.json"
+    },
+  
+    "sdk": {
+      "package": "@einsid/core",
+      "status": "coming-soon",
+      "docs": "https://einz.io/docs/overview.html"
+    }
+  }

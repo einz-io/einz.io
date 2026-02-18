@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audit workflow</title>
-    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
-    <link rel="stylesheet" href="../assets/docs.css" />
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="stylesheet" href="../assets/docs.css">
   </head>
   <body>
     <main class="wrap">
@@ -26,7 +26,7 @@
           This page describes how the Judge Agent processes Shield-MCP output to
           update agent credibility.
         </p>
-        <h2 id="1-the-judges-audit-workflow">1. The Judge’s Audit Workflow</h2>
+        <h2 id="s1-the-judges-audit-workflow">1. The Judge’s Audit Workflow</h2>
         <p>
           When the Judge receives an evidence packet, it performs three-stage
           validation:
@@ -47,7 +47,7 @@
             <code>result_hash</code> is reproducible.
           </li>
         </ul>
-        <h2 id="2-python-logic-for-the-judge-agent">
+        <h2 id="s2-python-logic-for-the-judge-agent">
           2. Python Logic for the Judge Agent
         </h2>
         <p>
@@ -90,7 +90,7 @@ def verify_and_score(secure_output, registered_public_key):
         print(&quot;❌ Verification Failed: The evidence was tampered with or the key is wrong.&quot;)
         return -100.0  # Trigger a slashing event
 </code></pre>
-        <h2 id="3-updating-the-global-trust-platform">
+        <h2 id="s3-updating-the-global-trust-platform">
           3. Updating the Global Trust Platform
         </h2>
         <p>
@@ -117,7 +117,9 @@ def verify_and_score(secure_output, registered_public_key):
           it is removed from the next Merkle tree and its TPM ID is added to the
           revocation list.
         </p>
-        <h2 id="4-why-this-architecture-wins">4. Why This Architecture Wins</h2>
+        <h2 id="s4-why-this-architecture-wins">
+          4. Why This Architecture Wins
+        </h2>
         <ul>
           <li>
             <strong>Immutability without a Chain:</strong> Publishing the root
