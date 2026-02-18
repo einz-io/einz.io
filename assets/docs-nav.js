@@ -2,7 +2,7 @@
   const MEDIA = {
     github: "https://github.com/einsid",
     x: "https://x.com/eins_id",
-    email: "mailto:hello@eins.id",
+    email: "mailto:hello@einz.io",
   };
 
   const ICONS = {
