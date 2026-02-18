@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>overview</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="overview.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="protocol-overview-agentic-identity-responsibility">
+          Protocol Overview: Agentic Identity &amp; Responsibility
+        </h1>
+        <p>
+          This overview consolidates the current repository into one
+          compare-ready narrative. It is designed to answer:
+          <strong
+            >what the protocol claims, how it works, where responsibility is
+            enforced, and what exists today in this repo</strong
+          >.
+        </p>
+        <h2 id="table-of-contents">Table of Contents</h2>
+        <ol>
+          <li><a href="#1-executive-snapshot">Executive Snapshot</a></li>
+          <li>
+            <a href="#2-core-architecture-identity-delegation-audit"
+              >Core Architecture (Identity → Delegation → Audit)</a
+            >
+          </li>
+          <li>
+            <a href="#3-governance-and-judiciary-model"
+              >Governance and Judiciary Model</a
+            >
+          </li>
+          <li>
+            <a href="#4-terms-liability-and-slashing"
+              >Terms, Liability, and Slashing</a
+            >
+          </li>
+          <li>
+            <a href="#5-forensic-accountability-and-backtracking"
+              >Forensic Accountability and Backtracking</a
+            >
+          </li>
+          <li>
+            <a href="#6-developer-integration-path"
+              >Developer Integration Path</a
+            >
+          </li>
+          <li>
+            <a href="#7-launch-readiness-and-roadmap-state"
+              >Launch Readiness and Roadmap State</a
+            >
+          </li>
+          <li>
+            <a href="#8-implementation-surface-in-this-repo"
+              >Implementation Surface in This Repo</a
+            >
+          </li>
+          <li>
+            <a href="#9-comparison-view-current-state-vs-intended-protocol"
+              >Comparison View: Current State vs Intended Protocol</a
+            >
+          </li>
+          <li>
+            <a href="#10-open-questions-and-suggested-next-moves"
+              >Open Questions and Suggested Next Moves</a
+            >
+          </li>
+        </ol>
+        <hr />
+        <h2 id="1-executive-snapshot">1. Executive Snapshot</h2>
+        <p>
+          The current protocol vision is a
+          <strong>hardware-anchored trust stack for autonomous agents</strong>:
+        </p>
+        <ul>
+          <li>
+            Identity is bound to silicon (TPM/TEE), not usernames or API keys.
+          </li>
+          <li>
+            Delegation is cryptographically wrapped through Shield-MCP
+            semantics.
+          </li>
+          <li>
+            Every meaningful action is expected to carry signed evidence and
+            intent metadata.
+          </li>
+          <li>
+            Disputes are resolved via deterministic verification and judiciary
+            scoring.
+          </li>
+          <li>
+            Penalties can escalate to physical identity revocation (hardware
+            blacklist).
+          </li>
+        </ul>
+        <p>
+          In practical terms, this repo currently reads as a
+          <strong>design and operating doctrine</strong> with selective
+          proof-of-concept code snippets, not yet a full runnable platform.
+        </p>
+        <h2 id="2-core-architecture-identity-delegation-audit">
+          2. Core Architecture (Identity → Delegation → Audit)
+        </h2>
+        <h3 id="21-identity-layer">2.1 Identity Layer</h3>
+        <p>
+          The system roots trust in TPM-derived keys and measured boot/PCR
+          state:
+        </p>
+        <ul>
+          <li>
+            The protocol rejects purely software identity for high-trust
+            participation.
+          </li>
+          <li>
+            Agent trust state depends on cryptographic attestation continuity.
+          </li>
+          <li>
+            Any substantial runtime drift (e.g., guardrail tampering) should
+            invalidate trust.
+          </li>
+        </ul>
+        <h3 id="22-delegation-layer">2.2 Delegation Layer</h3>
+        <p>Delegation is framed as MCP with hardened wrapper semantics:</p>
+        <ul>
+          <li>
+            Session-scoped keying and parent-child causal links are core
+            concepts.
+          </li>
+          <li>
+            Intent declarations are expected before critical tool invocation.
+          </li>
+          <li>
+            Evidence packets should couple result hashes, timing, and
+            environment metadata.
+          </li>
+        </ul>
+        <h3 id="23-audit-layer">2.3 Audit Layer</h3>
+        <p>Audit combines cryptographic verification and semantic review:</p>
+        <ul>
+          <li>
+            Fast checks validate signature authenticity and policy conformance.
+          </li>
+          <li>
+            Deep checks replay context to evaluate logic quality and
+            intent-action alignment.
+          </li>
+          <li>
+            Output is meant to feed reputation updates and potential revocation
+            actions.
+          </li>
+        </ul>
+        <h2 id="3-governance-and-judiciary-model">
+          3. Governance and Judiciary Model
+        </h2>
+        <p>
+          The governance model introduces a dedicated Judge layer with explicit
+          anti-collusion controls:
+        </p>
+        <ul>
+          <li>
+            Strict Judge eligibility (security profile + reputation
+            prerequisites).
+          </li>
+          <li>
+            Blind/randomized assignment and conflict-of-interest filtering.
+          </li>
+          <li>
+            Structured penalties from warning-level score loss up to total
+            revocation.
+          </li>
+          <li>
+            Appeals route to human-in-the-loop adjudication for contested
+            outcomes.
+          </li>
+        </ul>
+        <p>
+          This is notable because governance is treated as a first-class
+          protocol subsystem, not an afterthought.
+        </p>
+        <h2 id="4-terms-liability-and-slashing">
+          4. Terms, Liability, and Slashing
+        </h2>
+        <p>The ToS material defines accountability aggressively:</p>
+        <ul>
+          <li>
+            Signed output is attributable to the provider (non-repudiation
+            stance).
+          </li>
+          <li>
+            PCR and integrity violations trigger immediate trust
+            degradation/termination.
+          </li>
+          <li>
+            “Logic negligence” formalizes semantic failure cases, not only
+            security breaches.
+          </li>
+          <li>
+            Severe abuse can invoke irreversible hardware-level blacklisting.
+          </li>
+        </ul>
+        <p>
+          This creates a tight coupling between technical controls and
+          legal/commercial responsibility.
+        </p>
+        <h2 id="5-forensic-accountability-and-backtracking">
+          5. Forensic Accountability and Backtracking
+        </h2>
+        <p>A major strength of this doc set is recursive forensic logic:</p>
+        <ul>
+          <li>
+            Intent-action binding adds inspectable rationale to the execution
+            trace.
+          </li>
+          <li>
+            Deterministic verification is positioned as the canonical dispute
+            primitive.
+          </li>
+          <li>
+            Hash-linked delegation enables responsibility tracing across
+            multi-agent chains.
+          </li>
+          <li>
+            Two-speed scoring separates mechanical integrity from outcome
+            quality.
+          </li>
+        </ul>
+        <p>
+          The protocol therefore targets both “was this authentic?” and “was
+          this sensible?”.
+        </p>
+        <h2 id="6-developer-integration-path">6. Developer Integration Path</h2>
+        <p>The developer guide prescribes a fairly clean adoption flow:</p>
+        <ol>
+          <li>Prepare TPM/TEE-capable environment.</li>
+          <li>Wrap existing MCP tools with trusted middleware.</li>
+          <li>Register attestation material with the identity registry.</li>
+          <li>Receive reputation updates via periodic platform root sync.</li>
+          <li>Accept that revocation and kill-switch rules are enforceable.</li>
+        </ol>
+        <p>
+          The onboarding narrative is coherent, though implementation details
+          are still mostly reference-level.
+        </p>
+        <h2 id="7-launch-readiness-and-roadmap-state">
+          7. Launch Readiness and Roadmap State
+        </h2>
+        <p>The 30-day roadmap has clear sequencing:</p>
+        <ul>
+          <li>Phase 1: Identity roots and SDK primitives.</li>
+          <li>Phase 2: Pilot onboarding and handshake realism tests.</li>
+          <li>
+            Phase 3: Judiciary rollout, revocation drills, and transparency
+            publication.
+          </li>
+        </ul>
+        <p>
+          As of current repo content, this remains a
+          <strong>planning-state roadmap</strong> rather than a completed
+          milestone report.
+        </p>
+        <h2 id="8-implementation-surface-in-this-repo">
+          8. Implementation Surface in This Repo
+        </h2>
+        <h3 id="what-exists-now">What exists now</h3>
+        <ul>
+          <li>Comprehensive conceptual/technical policy docs.</li>
+          <li>POC-style Python snippets in Shield and audit docs.</li>
+          <li>TPM command appendix and schema sketches.</li>
+          <li>
+            Brutalist web pages generated from markdown for browsing and
+            comparison.
+          </li>
+        </ul>
+        <h3 id="what-does-not-yet-exist-in-this-repo">
+          What does not yet exist (in this repo)
+        </h3>
+        <ul>
+          <li>Production identity registry service code.</li>
+          <li>
+            End-to-end signed workflow implementation with persistent storage.
+          </li>
+          <li>Live judge orchestration and replay service binaries.</li>
+          <li>Automated conformance test suite for protocol guarantees.</li>
+        </ul>
+        <h2 id="9-comparison-view-current-state-vs-intended-protocol">
+          9. Comparison View: Current State vs Intended Protocol
+        </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Intended Protocol</th>
+              <th>Current Repo State</th>
+              <th>Comparison Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Identity Attestation</td>
+              <td>TPM-backed registration and quote verification</td>
+              <td>Described in docs + command examples</td>
+              <td>Strong design, limited executable implementation</td>
+            </tr>
+            <tr>
+              <td>Secure Delegation</td>
+              <td>Shield-MCP wrappers with signed metadata</td>
+              <td>POC snippets and workflow docs</td>
+              <td>Architecture is clear, not productized</td>
+            </tr>
+            <tr>
+              <td>Deterministic verification</td>
+              <td>Re-run exact context with reproducible state</td>
+              <td>Detailed concept in forensic docs</td>
+              <td>Missing concrete replay runtime</td>
+            </tr>
+            <tr>
+              <td>Judiciary Operations</td>
+              <td>Blind-assigned judges + anti-collusion checks</td>
+              <td>Governance rules and pseudologic</td>
+              <td>Governance is robust on paper</td>
+            </tr>
+            <tr>
+              <td>Reputation Engine</td>
+              <td>Dual score with periodic Merkle root publication</td>
+              <td>Formula and process documented</td>
+              <td>Needs running scoring pipeline</td>
+            </tr>
+            <tr>
+              <td>Revocation/Slashing</td>
+              <td>Immediate and permanent penalties as needed</td>
+              <td>Policy and ToS coverage complete</td>
+              <td>Enforcement stack not implemented here</td>
+            </tr>
+            <tr>
+              <td>Developer Experience</td>
+              <td>SDK, registration flow, daily proof updates</td>
+              <td>Guide and roadmap present</td>
+              <td>Good narrative, minimal code artifacts</td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="10-open-questions-and-suggested-next-moves">
+          10. Open Questions and Suggested Next Moves
+        </h2>
+        <h3 id="open-questions">Open questions</h3>
+        <ul>
+          <li>
+            What is the exact authoritative schema for all signed envelopes and
+            replay manifests?
+          </li>
+          <li>
+            Which components are trusted central services vs decentralized
+            verifiers in v1?
+          </li>
+          <li>
+            What minimum evidence is legally sufficient for final adjudication?
+          </li>
+        </ul>
+        <h3 id="suggested-next-moves">Suggested next moves</h3>
+        <ol>
+          <li>
+            Freeze a canonical protocol schema (<code>initialize</code>,
+            <code>tools/call</code>, evidence packet, verdict packet).
+          </li>
+          <li>
+            Build a minimal runnable reference stack (registry + signer +
+            verifier + replay worker).
+          </li>
+          <li>
+            Add conformance tests for intent-action binding and replay
+            determinism.
+          </li>
+          <li>
+            Publish a versioned compatibility matrix for clients and agents.
+          </li>
+        </ol>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

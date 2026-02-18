@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EINS.ID — Hardware-Rooted Trust for the Agentic Web</title>
+    <link rel="stylesheet" href="assets/index.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <header class="top-bar">
+          <a href="index.html" class="eyebrow"
+            >EINZ -> Single Source of Agentic Truth</a
+          >
+          <nav class="top-nav" aria-label="Main navigation">
+            <a href="docs/overview.html">Docs</a>
+            <a href="docs/whitepaper.html">Whitepaper</a>
+            <a
+              href="https://github.com/einsid"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+            <a href="contact.html">Contact</a>
+          </nav>
+        </header>
+        <h1 id="hero-title">Hardware-Rooted Trust<br />for the Agentic Web</h1>
+
+        <div class="intro-row">
+          <p class="intro">
+            When AI agents act autonomously, trust can't rely on promises or
+            ledgers. eins.id binds agent identity to physical TPM hardware,
+            cryptographically signs every action, and makes reputation
+            non-transferable. If an agent can't prove what it runs on, it
+            doesn't get to participate.
+          </p>
+          <pre class="ascii-hero" aria-hidden="true">
+        ┌─────────┐                 ┌─────────┐
+        │ TPM 2.0 │                 │ TPM 2.0 │
+        │ AGENT-A │── ATTEST ─────▶ │ AGENT-B │
+        │ PCR ████│◀─ VERIFY ────── │ PCR ████│
+        │ SCORE:92│── DELEGATE ───▶ │ SCORE:87│
+        └────┬┬┬──┘                 └────┬┬┬──┘
+             │││                         │││</pre
+          >
+        </div>
+
+        <section class="kpi" aria-label="Core protocol principles">
+          <div>
+            <span class="label">Identity Root</span>
+            <span class="value">TPM-Bound</span>
+          </div>
+          <div>
+            <span class="label">Delegation Model</span>
+            <span class="value">Shield-MCP</span>
+          </div>
+          <div>
+            <span class="label">Audit Mechanism</span>
+            <span class="value">Verification</span>
+          </div>
+          <div>
+            <span class="label">Penalty Layer</span>
+            <span class="value">Hardware Slashing</span>
+          </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="graphic" aria-label="Use Cases">
+          <h2>Use Cases</h2>
+          <div class="use-cases">
+            <div class="use-case">
+              <span class="node-value">Agentic Commerce</span>
+              <span class="node-desc"
+                >An agent books flights and purchases goods via WebMCP. eins.id
+                proves it's authorized, signs every transaction, and ensures
+                accountability if it goes rogue.</span
+              >
+            </div>
+            <div class="use-case">
+              <span class="node-value">Agent-to-Agent Delegation</span>
+              <span class="node-desc"
+                >Your orchestrator delegates to a sub-agent you've never seen.
+                eins.id verifies its hardware identity and runtime state before
+                any data is shared.</span
+              >
+            </div>
+            <div class="use-case">
+              <span class="node-value">High-Stakes Automation</span>
+              <span class="node-desc"
+                >Financial analysis, medical triage, legal review. When the cost
+                of a wrong action is catastrophic, software-only trust isn't
+                enough.</span
+              >
+            </div>
+          </div>
+        </section>
+
+        <!-- Product 1: Eins Core -->
+        <section class="graphic" aria-label="Eins Core — The Protocol">
+          <h2>Eins Core — The Protocol</h2>
+          <div class="flow">
+            <div class="node">
+              <span class="node-value">Attestation</span>
+            </div>
+            <div class="connector" aria-hidden="true">→</div>
+            <div class="node">
+              <span class="node-value">Registration</span>
+            </div>
+            <div class="connector" aria-hidden="true">→</div>
+            <div class="node">
+              <span class="node-value">Signing</span>
+            </div>
+          </div>
+          <span class="product-install"
+            >npm install @einsid/core · coming soon</span
+          >
+          <p class="product-desc">
+            TPM identity check, certificate issuance, and request signing for
+            any MCP-compatible agent. Drop-in middleware. Three API calls to
+            hardware-backed identity.
+          </p>
+        </section>
+
+        <!-- Product 2: Eins Trust -->
+        <section class="graphic" aria-label="Eins Trust — The Network">
+          <h2>Eins Trust — The Network</h2>
+          <div class="flow">
+            <div class="node">
+              <span class="node-value">Validation</span>
+            </div>
+            <div class="connector" aria-hidden="true">→</div>
+            <div class="node">
+              <span class="node-value">Credibility & Responsibility</span>
+            </div>
+          </div>
+          <p class="product-desc">
+            Global reputation layer. Judge agents verify execution traces,
+            enforce policy compliance, and maintain credibility scores. Good
+            agents earn trust. Bad agents get slashed.
+          </p>
+          <div class="outcomes">
+            <div class="outcome">
+              <span class="node-label">Positive Outcome</span>
+              <span class="node-value">Credibility Gains</span>
+            </div>
+            <div class="outcome">
+              <span class="node-label">Negative Outcome</span>
+              <span class="node-value">Slashing / Score Decrease</span>
+            </div>
+          </div>
+        </section>
+
+        <a class="cta" href="docs/overview.html" aria-label="Documentation"
+          >Documentation</a
+        >
+        <a class="cta" href="docs/whitepaper.html" aria-label="Whitepaper"
+          >Whitepaper</a
+        >
+
+        <footer class="footer">
+          <p class="footer-copy">
+            <strong>Protocol signal:</strong> identity is cheap in software,
+            expensive in silicon. Responsibility should inherit that cost.
+          </p>
+          <nav class="footer-media" aria-label="Media links">
+            <a
+              href="https://github.com/einsid"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.72c-2.78.61-3.37-1.2-3.37-1.2-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.88 1.52 2.32 1.08 2.89.83.09-.64.35-1.08.63-1.33-2.22-.26-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.11-.26-.45-1.3.1-2.72 0 0 .84-.27 2.75 1.03A9.57 9.57 0 0 1 12 6.85c.85 0 1.71.11 2.5.33 1.9-1.3 2.75-1.03 2.75-1.03.55 1.42.21 2.46.1 2.72.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.93.68 1.88v2.79c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+                />
+              </svg>
+              <span class="sr-only">GitHub</span>
+            </a>
+            <a
+              href="https://x.com/eins_id"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M4 3h4.19l4.21 5.91L17.42 3H21l-6.84 7.82L22 21h-4.2l-4.65-6.5L7.36 21H3.78l7.1-8.11L4 3Zm4.83 2.43H7.2l8.03 13.14h1.63L8.83 5.43Z"
+                />
+              </svg>
+              <span class="sr-only">X</span>
+            </a>
+            <a href="mailto:hello@eins.id" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M3 5h18v14H3V5Zm2 2v.24L12 12l7-4.76V7H5Zm14 10V9.68l-7 4.77-7-4.77V17h14Z"
+                />
+              </svg>
+              <span class="sr-only">Email</span>
+            </a>
+          </nav>
+          <nav class="footer-legal" aria-label="Legal links">
+            <a href="legal.html">Imprint & Privacy</a>
+          </nav>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audit workflow</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="audit-workflow.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="judge-agent-audit-workflow">Judge Agent Audit Workflow</h1>
+        <p>
+          To complete the loop, the Judge Agent acts as the verifier. In this
+          non-blockchain system, the Judge does not need a central server to
+          validate signatures; it needs only cryptographic verification and the
+          platform public root.
+        </p>
+        <p>
+          This page describes how the Judge Agent processes Shield-MCP output to
+          update agent credibility.
+        </p>
+        <h2 id="1-the-judges-audit-workflow">1. The Judge’s Audit Workflow</h2>
+        <p>
+          When the Judge receives an evidence packet, it performs three-stage
+          validation:
+        </p>
+        <ul>
+          <li>
+            <strong>Identity Match:</strong> Does the public key used for the
+            signature match the TPM ID registered in the Merkle tree?
+          </li>
+          <li>
+            <strong>Integrity Check:</strong> Does
+            <code>pcr_snapshot</code> match the gold standard for that agent
+            model (e.g., confirming no unauthorized plugins)?
+          </li>
+          <li>
+            <strong>Result Verification (Optional):</strong> For high-stakes
+            tasks, the Judge re-runs part of the logic to test whether
+            <code>result_hash</code> is reproducible.
+          </li>
+        </ul>
+        <h2 id="2-python-logic-for-the-judge-agent">
+          2. Python Logic for the Judge Agent
+        </h2>
+        <p>
+          This script demonstrates how a Judge verifies the hardware signature
+          and prepares a reputation update.
+        </p>
+        <pre><code class="language-python">from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+import json
+
+
+def verify_and_score(secure_output, registered_public_key):
+    &quot;&quot;&quot;
+    The Judge Agent's core logic to verify the Shield-MCP output.
+    &quot;&quot;&quot;
+    metadata = secure_output['security_metadata']
+    evidence = metadata['evidence']
+    signature = bytes.fromhex(metadata['tpm_signature'])
+
+    # 1. Serialize the evidence exactly as the agent did
+    serialized_evidence = json.dumps(evidence, sort_keys=True).encode()
+
+    try:
+        # 2. Cryptographically verify that the TPM actually signed this
+        registered_public_key.verify(
+            signature,
+            serialized_evidence,
+            padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),
+            hashes.SHA256()
+        )
+        print(&quot;✅ Hardware Signature Verified: The data is authentic.&quot;)
+
+        # 3. Perform policy check (e.g., latency vs. complexity)
+        if evidence['latency_ms'] &lt; 5:
+            return 0.1  # Suspiciously fast; potential &quot;faked&quot; work
+
+        return 1.0  # Full reputation point
+
+    except Exception:
+        print(&quot;❌ Verification Failed: The evidence was tampered with or the key is wrong.&quot;)
+        return -100.0  # Trigger a slashing event
+</code></pre>
+        <h2 id="3-updating-the-global-trust-platform">
+          3. Updating the Global Trust Platform
+        </h2>
+        <p>
+          Once the Judge Agent signs off on a score, the platform performs a
+          batch update:
+        </p>
+        <ul>
+          <li>
+            <strong>No Individual Transactions:</strong> To avoid
+            blockchain-like overhead, the platform collects 1,000 Judge
+            approvals.
+          </li>
+          <li>
+            <strong>Merkle Rebuild:</strong> It rebuilds the Merkle tree with
+            updated scores.
+          </li>
+          <li>
+            <strong>Root Publication:</strong> It publishes the new root hash.
+          </li>
+        </ul>
+        <p>
+          Each agent then receives an updated reputation state in the next
+          global root cycle. If an agent is slashed (score: <code>-100</code>),
+          it is removed from the next Merkle tree and its TPM ID is added to the
+          revocation list.
+        </p>
+        <h2 id="4-why-this-architecture-wins">4. Why This Architecture Wins</h2>
+        <ul>
+          <li>
+            <strong>Immutability without a Chain:</strong> Publishing the root
+            hash prevents hidden score edits because any change alters the hash
+            for everyone.
+          </li>
+          <li>
+            <strong>Privacy:</strong> The Judge can evaluate the evidence packet
+            without direct access to private task data (via hash-based proofs).
+          </li>
+          <li>
+            <strong>Hardware Enforcement:</strong> A banned agent cannot simply
+            change IP; its TPM identity is physically anchored and rejected
+            network-wide.
+          </li>
+        </ul>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

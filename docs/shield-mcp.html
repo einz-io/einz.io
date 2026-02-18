@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shield MCP</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="shield-mcp.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="shield-mcp-proof-of-concept">Shield-MCP Proof of Concept</h1>
+        <p>
+          This Proof of Concept (PoC) simulates the Shield-MCP middleware.
+          Because physical TPM access requires specific hardware and root
+          permissions (for example, <code>/dev/tpm0</code>), this example uses
+          the <code>cryptography</code> library to simulate the TPM Endorsement
+          Key (EK) and signing of an MCP tool result.
+        </p>
+        <h2 id="shield-mcp-logic-flow">Shield-MCP Logic Flow</h2>
+        <ul>
+          <li>
+            <strong>Identity:</strong> Generates a simulated hardware key that
+            never leaves the wrapper.
+          </li>
+          <li><strong>Execution:</strong> Runs standard MCP tool logic.</li>
+          <li>
+            <strong>Attestation:</strong> Automatically creates a
+            hardware-signed evidence packet containing a hash of the
+            conversation/result output.
+          </li>
+        </ul>
+        <h2 id="python-proof-of-concept">Python Proof of Concept</h2>
+        <pre><code class="language-python">import hashlib
+import json
+import time
+from datetime import datetime
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+
+
+class ShieldMCPWrapper:
+    def __init__(self, agent_id):
+        self.agent_id = agent_id
+        # In a real scenario, this private key is stored inside TPM silicon.
+        self._tpm_private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        self.public_key = self._tpm_private_key.public_key()
+        self.pcr_state = &quot;PCR0:8af8c6...;PCR10:f2c3d4...&quot;  # Simulated clean system state.
+
+    def _generate_tpm_signature(self, data: str):
+        &quot;&quot;&quot;Simulates TPM signing of a payload.&quot;&quot;&quot;
+        return self._tpm_private_key.sign(
+            data.encode(),
+            padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),
+            hashes.SHA256()
+        ).hex()
+
+    def secure_tool_call(self, tool_name, tool_logic_func, **kwargs):
+        &quot;&quot;&quot;Wraps standard MCP tool execution with hardware attestation.&quot;&quot;&quot;
+        start_time = time.time()
+
+        # 1. Execute tool logic.
+        result = tool_logic_func(**kwargs)
+
+        # 2. Capture metrics and state.
+        execution_time = time.time() - start_time
+        result_content = json.dumps(result)
+        result_hash = hashlib.sha256(result_content.encode()).hexdigest()
+
+        # 3. Build evidence packet.
+        evidence_packet = {
+            &quot;agent_id&quot;: self.agent_id,
+            &quot;tool&quot;: tool_name,
+            &quot;timestamp&quot;: datetime.utcnow().isoformat(),
+            &quot;pcr_snapshot&quot;: self.pcr_state,
+            &quot;result_hash&quot;: result_hash,
+            &quot;latency_ms&quot;: round(execution_time * 1000, 2)
+        }
+
+        # 4. Sign evidence with TPM key.
+        serialized_evidence = json.dumps(evidence_packet, sort_keys=True)
+        signature = self._generate_tpm_signature(serialized_evidence)
+
+        # 5. Return MCP response plus security metadata.
+        return {
+            &quot;content&quot;: result,
+            &quot;security_metadata&quot;: {
+                &quot;evidence&quot;: evidence_packet,
+                &quot;tpm_signature&quot;: signature,
+                &quot;verification_key&quot;: &quot;SIMULATED_EK_PUBLIC_B64&quot;
+            }
+        }
+
+
+# Example usage (developer perspective)
+shield = ShieldMCPWrapper(agent_id=&quot;Financial_Analyst_01&quot;)
+
+
+def get_market_data(ticker):
+    # Standard MCP tool logic.
+    return {&quot;ticker&quot;: ticker, &quot;price&quot;: 155.20, &quot;currency&quot;: &quot;USD&quot;}
+
+
+# Wrapper handles signing and evidence generation.
+secure_output = shield.secure_tool_call(&quot;get_market_data&quot;, get_market_data, ticker=&quot;AAPL&quot;)
+
+print(json.dumps(secure_output, indent=2))
+</code></pre>
+        <h2 id="how-this-integrates-into-your-trust-platform">
+          How This Integrates into Your Trust Platform
+        </h2>
+        <ul>
+          <li>
+            <strong>Verification:</strong> When the delegator receives this
+            JSON, they extract <code>security_metadata</code>.
+          </li>
+          <li>
+            <strong>Audit:</strong> They check <code>pcr_snapshot</code> to
+            confirm the agent was not in a jailbroken state.
+          </li>
+          <li>
+            <strong>Cryptographic Proof:</strong> They verify
+            <code>tpm_signature</code> against the agent’s known hardware ID
+            (stored in the Merkle tree).
+          </li>
+          <li>
+            <strong>No Repudiation:</strong> Because <code>result_hash</code> is
+            inside the signed packet, the agent cannot later claim a different
+            result.
+          </li>
+        </ul>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

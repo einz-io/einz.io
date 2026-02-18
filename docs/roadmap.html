@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>roadmap</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="roadmap.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="30-day-launch-checklist-v1-pilot">
+          30-Day Launch Checklist (v1 Pilot)
+        </h1>
+        <p>
+          This checklist moves the protocol from conceptual architecture to a
+          functional v1 pilot. It prioritizes the Shield-MCP Wrapper and the
+          Identity Registry as foundational components.
+        </p>
+        <h2 id="phase-1-foundation-identity-days-110">
+          Phase 1: Foundation &amp; Identity (Days 1–10)
+        </h2>
+        <p>
+          <strong>Goal:</strong> Establish the hardware root of trust and the
+          registration portal.
+        </p>
+        <ul>
+          <li>
+            [ ] <strong>Day 1: Environment Setup.</strong> Configure a reference
+            server with a TPM 2.0 module (or a cloud TEE like AWS Nitro
+            Enclaves).
+          </li>
+          <li>
+            [ ] <strong>Day 3: The Identity Provider.</strong> Deploy the
+            central Identity Registry (the service that verifies TPM quotes and
+            issues "birth certificates").
+          </li>
+          <li>
+            [ ] <strong>Day 5: Merkle Tree Genesis.</strong> Generate the
+            Genesis Root Hash, the first version of the global reputation log.
+          </li>
+          <li>
+            [ ] <strong>Day 7: Shield-MCP SDK Alpha.</strong> Finalize the
+            Python wrapper that automates TPM signing for standard MCP tool
+            calls.
+          </li>
+          <li>
+            [ ] <strong>Day 10: PCR Whitelisting.</strong> Define the
+            gold-standard hashes for the first supported AI models (e.g.,
+            specific versions of Llama 3 or GPT-4o-mini via MCP).
+          </li>
+        </ul>
+        <h2 id="phase-2-the-pilot-program-days-1120">
+          Phase 2: The Pilot Program (Days 11–20)
+        </h2>
+        <p>
+          <strong>Goal:</strong> Onboard the first trusted agents and test the
+          handshake.
+        </p>
+        <ul>
+          <li>
+            [ ] <strong>Day 11: Developer Portal.</strong> Launch a simple site
+            where developers can download the <code>shield-mcp</code> SDK and
+            read documentation.
+          </li>
+          <li>
+            [ ] <strong>Day 13: The First 10 Agents.</strong> Recruit 10 pilot
+            developers to register their hardware and agents.
+          </li>
+          <li>
+            [ ] <strong>Day 15: Peer-to-Peer Handshake Test.</strong> Execute a
+            task where Agent A verifies Agent B’s Merkle proof locally before
+            delegating.
+          </li>
+          <li>
+            [ ] <strong>Day 18: Simulated Attack.</strong> Attempt to register a
+            spoofed (software-only) agent to confirm TPM verification correctly
+            rejects it.
+          </li>
+          <li>
+            [ ] <strong>Day 20: Performance Logging.</strong> Ensure every pilot
+            task generates a valid TPM-signed evidence packet.
+          </li>
+        </ul>
+        <h2 id="phase-3-judiciary-scale-days-2130">
+          Phase 3: Judiciary &amp; Scale (Days 21–30)
+        </h2>
+        <p>
+          <strong>Goal:</strong> Deploy the automated auditing layer and publish
+          the public root.
+        </p>
+        <ul>
+          <li>
+            [ ] <strong>Day 21: Judge Agent Deployment.</strong> Deploy the
+            first 3 system Judge Agents (platform-run) to audit logs.
+          </li>
+          <li>
+            [ ] <strong>Day 24: First Reputation Update.</strong> Perform the
+            first batch update of the Merkle tree based on pilot outcomes.
+          </li>
+          <li>
+            [ ] <strong>Day 27: Revocation List Test.</strong> Test the kill
+            switch by manually revoking one pilot agent and verifying handshake
+            denial.
+          </li>
+          <li>
+            [ ] <strong>Day 29: Transparency Dashboard.</strong> Launch a public
+            site showing the current global root hash and number of verified
+            hardware modules.
+          </li>
+          <li>
+            [ ] <strong>Day 30: Public Alpha Launch.</strong> Open the platform
+            for general developer registration.
+          </li>
+        </ul>
+        <h2 id="critical-success-metrics-day-30">
+          Critical Success Metrics (Day 30)
+        </h2>
+        <ul>
+          <li>
+            <strong>Handshake Latency:</strong> Direct P2P verification is under
+            200 ms.
+          </li>
+          <li>
+            <strong>Hardware Integrity:</strong> 100% of active agents have a
+            verified TPM EK.
+          </li>
+          <li>
+            <strong>Audit Coverage:</strong> 100% of tasks have a signed
+            evidence packet stored in the transparency log.
+          </li>
+        </ul>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

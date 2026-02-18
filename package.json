@@ -1,0 +1,19 @@
+{
+  "name": "eins-id-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Quality checks for HTML/CSS docs site",
+  "scripts": {
+    "lint:html": "html-validate \"**/*.html\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:links": "node scripts/check-links.mjs",
+    "format:check": "prettier --check \"**/*.{html,css,js}\"",
+    "quality": "npm run lint:html && npm run lint:css && npm run lint:links && npm run format:check"
+  },
+  "devDependencies": {
+    "html-validate": "^9.2.0",
+    "prettier": "^3.5.3",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0"
+  }
+}

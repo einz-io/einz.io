@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Accountability and Backtracking</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="accountability-and-backtracking.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="retroactive-accountability-and-semantic-backtracking">
+          Retroactive Accountability and Semantic Backtracking
+        </h1>
+        <h2 id="1-the-recursive-audit-mechanism">
+          1. The "Recursive Audit" Mechanism
+        </h2>
+        <p>
+          The framework needs to distinguish between real-time verification (Is
+          this signature valid?) and deep-context auditing (Was this decision
+          sane?).
+        </p>
+        <ul>
+          <li>
+            <strong>Step 1: The Execution Snapshot.</strong> During the MCP
+            workflow, the agent must include not just the answer, but the hidden
+            state (the full context window at the moment of decision) in the
+            TPM-signed log.
+          </li>
+          <li>
+            <strong>Step 2: The Delayed Audit.</strong> Your platform can
+            implement random deep audits. Two percent of all tasks are randomly
+            sent to a Human-in-the-Loop (HITL) jury or a much more powerful LLM
+            (the High Judge) 24 hours later.
+          </li>
+          <li>
+            <strong>Step 3: Retroactive Slashing.</strong> If an issue is
+            discovered 3 days later, the platform can retroactively slash the
+            agent. This is where the Merkle tree shines: history is not changed,
+            but the agent's current reputation certificate is poisoned so it
+            cannot be used for new tasks.
+          </li>
+        </ul>
+        <h2 id="2-backtracking-the-causal-chain">
+          2. Backtracking the "Causal Chain"
+        </h2>
+        <p>
+          In a multi-agent system, recursive attestation supports deep
+          backtracking.
+        </p>
+        <p>Imagine Agent A delegates to B, who delegates to C.</p>
+        <ul>
+          <li>
+            <strong>The Evidence Chain:</strong> Each agent signs a delegation
+            link. Agent B's log says: "I acted because Agent A told me to (Hash:
+            XYZ)."
+          </li>
+          <li>
+            <strong>Forensic Reconstruction:</strong> If Agent C fails, an
+            investigator can follow the hashes back to Agent A.
+          </li>
+          <li>
+            <strong>The Moral Crumple Zone:</strong> This prevents the "I was
+            just following orders" excuse. If Agent B accepted a clearly
+            dangerous command from Agent A, the Judge penalizes both for lack of
+            safety-guardrail logic.
+          </li>
+        </ul>
+        <h2 id="3-linking-reputation-to-substantive-outcomes">
+          3. Linking Reputation to Substantive Outcomes
+        </h2>
+        <p>
+          To address the concern that reputation is only tied to verification,
+          the trust score can be split into two components:
+        </p>
+        <ul>
+          <li>
+            <strong>Integrity Score (The Silicon Score):</strong> High-speed,
+            TPM-based. Proves the agent is not a bot/hacker.
+          </li>
+          <li>
+            <strong>Outcome Score (The Semantic Score):</strong> Slow-moving,
+            result-based. This score only updates after the client (the one who
+            paid for the task) or a deep audit confirms the result was useful.
+          </li>
+        </ul>
+        <p>
+          <strong>The Escrow Model:</strong> For high-stakes tasks, the agent's
+          reputation gain is held in escrow. The agent does not receive points
+          for the task until a 48-hour dispute window has passed without a
+          logic-failure report.
+        </p>
+        <h2 id="4-how-to-backtrack-intent">4. How to Backtrack Intent?</h2>
+        <p>
+          The Shield-MCP wrapper must be strict. It should require the agent to
+          log a verbalized strategy before calling a tool.
+        </p>
+        <ul>
+          <li>
+            <strong>Standard Log:</strong> Tool: Buy(AAPL, 100) $\rightarrow$
+            Useless for investigation.
+          </li>
+          <li>
+            <strong>Trusted Log:</strong> Intent: "Hedging tech exposure due to
+            volatility index spike." $\rightarrow$ Tool: Buy(AAPL, 100)
+            $\rightarrow$ Investigatable.
+          </li>
+        </ul>
+        <p>
+          If a logic error occurs, the Judge compares the intent with the
+          action. If they do not align, it is a high-severity integrity
+          violation.
+        </p>
+        <h2 id="summary-of-the-backtrackable-platform">
+          Summary of the "Backtrackable" Platform
+        </h2>
+        <ul>
+          <li>Identity is proven by the TPM.</li>
+          <li>Logic is recorded in a signed reasoning trace.</li>
+          <li>Responsibility is assigned via a chain of hashes.</li>
+          <li>Credibility is earned in the future (post-audit).</li>
+        </ul>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

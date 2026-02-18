@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forensic Investigation</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="forensic-investigation.html"
+      ></aside>
+      <article class="panel content">
+        <h2 id="1-the-intent-action-binding">1. The "Intent-Action" Binding</h2>
+        <p>
+          To prevent agents from just "complying" with technical protocols while
+          making bad decisions, the Shield-MCP wrapper must enforce a
+          pre-commitment to intent.
+        </p>
+        <ul>
+          <li>
+            <strong>The Problem:</strong> An agent buys the wrong stock but the
+            signature is valid.
+          </li>
+          <li>
+            <strong>The Fix:</strong> Before the agent executes
+            <code>Tool: Buy_Stock</code>, it must log an Intent Declaration
+            (e.g., "I am buying this to hedge against inflation based on the
+            10:00 AM CPI report").
+          </li>
+          <li>
+            <strong>The Forensic Link:</strong> The TPM signs the intent and the
+            action together. If an issue appears later, investigators don't just
+            see what happened; they see the reasoning the agent was committed to
+            at that exact millisecond.
+          </li>
+        </ul>
+        <h2 id="2-deterministic-forensic-replay">
+          2. Deterministic Forensic Replay
+        </h2>
+        <p>
+          How do we backtrack a task that happened weeks ago? We use
+          deterministic verification.
+        </p>
+        <p>
+          Because the Shield-MCP logs every LLM prompt, every tool response, and
+          every random seed used, your platform can re-run the agent in a
+          sandboxed digital twin.
+        </p>
+        <ul>
+          <li>
+            <strong>The Trigger:</strong> A client reports a logic failure
+            (e.g., "This agent gave me bad legal advice").
+          </li>
+          <li>
+            <strong>The Replay:</strong> The Judge Agent loads the original
+            TPM-signed logs into a clean-room environment.
+          </li>
+          <li>
+            <strong>The Comparison:</strong> The Judge replays the exact same
+            inputs. If the agent produces a different result, or if the
+            reasoning path is found to be flawed during replay, the agent's
+            semantic score is slashed.
+          </li>
+        </ul>
+        <h2 id="3-recursive-responsibility-the-delegation-chain">
+          3. Recursive Responsibility (The Delegation Chain)
+        </h2>
+        <p>
+          In the Intelligent Delegation paper, tasks are split between many
+          agents. If a failure occurs at the end of the chain, who is at fault?
+        </p>
+        <p>Your platform uses hash-linked accountability:</p>
+        <ul>
+          <li>Agent A (Delegator) signs a Scope of Authority for Agent B.</li>
+          yes
+          <li>Agent B (Delegatee) signs a Receipt of Context.</li>
+        </ul>
+        <p>
+          <strong>The Audit Trail:</strong> If Agent B makes a mistake because
+          Agent A gave it bad data, the forensic replay shows that Agent B's
+          logic was internally consistent but the input was poisoned. The
+          penalty is then automatically moved up the chain to Agent A.
+        </p>
+        <h2 id="4-two-tiered-reputation-score">
+          4. Two-Tiered Reputation Score
+        </h2>
+        <p>
+          To solve the compliance vs. quality issue, the reputation system is
+          split into two distinct metrics:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Verified By</th>
+              <th>Speed</th>
+              <th>What it Proves</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Integrity ($S_{i}$)</td>
+              <td>TPM Hardware</td>
+              <td>Instant</td>
+              <td>
+                This agent is not a hacker/bot and has not tampered with its
+                code.
+              </td>
+            </tr>
+            <tr>
+              <td>Semantic ($S_{s}$)</td>
+              <td>Post-Task Audit / Client Feedback</td>
+              <td>24h - 7 Days</td>
+              <td>
+                This agent makes good, logical decisions that lead to correct
+                outcomes.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>The Clawback Rule:</strong> An agent can have a perfect
+          integrity score but a terrible semantic score. High-value clients
+          require an agent to have both before delegating.
+        </p>
+        <h2 id="5-updated-whitepaper-section-forensic-investigation">
+          5. Updated Whitepaper Section: Forensic Investigation
+        </h2>
+        <h3 id="section-8-retrospective-accountability">
+          Section 8: Retrospective Accountability
+        </h3>
+        <p>
+          "Our platform recognizes that AI errors are often discovered
+          post-facto. To address this, the system maintains high-fidelity reason
+          logs. Every decision is bound to a point-in-time snapshot of the
+          agent's world-view. In the event of a dispute, a recursive audit can
+          be triggered, allowing a jury of high-trust agents to replay the
+          decision logic. This ensures that responsibility is not just a
+          technical check, but a semantic reality."
+        </p>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

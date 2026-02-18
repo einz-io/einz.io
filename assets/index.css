@@ -1,0 +1,527 @@
+:root {
+  --bg: #f7f7f7;
+  --ink: #111;
+  --line: #111;
+  --muted: #3a3a3a;
+  --panel: #fff;
+  --accent: #000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0 1.4rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      #ededed 39px,
+      #ededed 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      #ededed 39px,
+      #ededed 40px
+    ),
+    var(--bg);
+  background-size:
+    40px 40px,
+    40px 40px,
+    auto;
+  color: var(--ink);
+  font-family:
+    "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--line);
+}
+
+a:hover,
+a:focus-visible {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ── Layout ── */
+
+.wrap {
+  min-height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+
+.hero {
+  width: 100%;
+  max-width: 100%;
+  border: 5px solid var(--line);
+  background: var(--panel);
+  padding: clamp(1rem, 2.5vw, 2rem);
+  margin: 1.4rem 0;
+}
+
+/* ── Header ── */
+
+.eyebrow {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 2px solid #fff;
+  display: inline-block;
+  padding: 0.2rem 0.45rem;
+  margin-bottom: 0.9rem;
+  background: #1000dc;
+  color: #fff;
+}
+
+h1,
+h2,
+h3,
+p,
+li {
+  margin: 0 0 0.8rem 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
+}
+
+.intro {
+  max-width: 74ch;
+  font-size: clamp(0.95rem, 1.1vw, 1rem);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  color: var(--muted);
+}
+
+/* ── KPI Bar ── */
+
+.kpi {
+  border: 3px solid var(--line);
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1.8rem;
+  margin-bottom: 1.8rem;
+}
+
+.kpi div {
+  border-right: 3px solid var(--line);
+  padding: 0.66rem 0.74rem 0.7rem;
+}
+
+.kpi div:last-child {
+  border-right: 0;
+}
+
+.label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.12rem;
+}
+
+.intro-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.8rem 0 3rem;
+}
+
+.intro-row .intro {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.ascii-hero {
+  font-family: inherit;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  color: var(--muted);
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .intro-row {
+    flex-direction: column;
+  }
+}
+
+.value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.15;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  color: #0f0f0f;
+}
+
+/* ── Product Boxes (graphic) ── */
+
+.graphic {
+  margin: 1.8rem 0;
+  border: 3px solid var(--line);
+  background: #fafafa;
+  padding: 0.75rem;
+}
+
+.graphic h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.product-install {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--line);
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.65rem;
+  background: #fff;
+}
+
+.product-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0.65rem 0 0;
+  line-height: 1.4;
+  max-width: 74ch;
+}
+
+/* ── Flow Nodes ── */
+
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.45rem;
+}
+
+.node {
+  flex: 1 1 150px;
+  min-width: 130px;
+  border: 2px solid var(--line);
+  padding: 0.5rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.node-label {
+  font-size: 0.63rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.node-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.node-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.connector {
+  width: 30px;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* ── Outcomes ── */
+
+.outcomes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.outcome {
+  border: 2px solid var(--line);
+  background: #fff;
+  padding: 0.45rem;
+}
+
+.outcome .node-label {
+  margin-bottom: 0.15rem;
+}
+
+.outcome .node-value {
+  font-size: 0.9rem;
+}
+
+/* ── Use Cases ── */
+
+.use-cases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+}
+
+.use-case {
+  border: 2px solid var(--line);
+  padding: 0.5rem;
+  background: #fff;
+}
+
+.use-case .node-value {
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.use-case .node-desc {
+  font-size: 0.75rem;
+}
+
+/* ── CTAs ── */
+
+.cta {
+  margin-top: 1.8rem;
+  border: 3px solid var(--line);
+  padding: 0.65rem 0.75rem;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.cta + .cta {
+  margin-left: 0.55rem;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: var(--ink);
+  color: #fff;
+  border-bottom-color: var(--line);
+}
+
+/* ── Footer ── */
+
+.footer {
+  margin-top: 2rem;
+  border-top: 2px solid var(--line);
+  padding-top: 0.7rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.footer-copy {
+  margin: 0;
+  flex: 1 1 340px;
+}
+
+.footer-media {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+.footer-media a {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  text-decoration: none;
+  border: 2px solid var(--line);
+  background: #fff;
+}
+
+.footer-media a svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: currentColor;
+}
+
+.footer-media a:hover,
+.footer-media a:focus-visible {
+  background: #000;
+  color: #fff;
+}
+
+/* ── Utilities ── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  justify-content: center; /* oder left, je nach deinem Layout */
+}
+
+.footer-legal a {
+  font-size: 0.75rem;
+  color: inherit;
+  opacity: 0.5;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.footer-legal a:hover {
+  opacity: 1;
+}
+
+/* ── Mobile ── */
+
+@media (max-width: 640px) {
+  .kpi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kpi div {
+    border-right: 3px solid var(--line);
+  }
+
+  .kpi div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .kpi div:nth-child(-n + 2) {
+    border-bottom: 3px solid var(--line);
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .cta + .cta {
+    margin-left: 0;
+    margin-top: 0.55rem;
+  }
+
+  .flow {
+    flex-direction: column;
+  }
+
+  .connector {
+    width: 100%;
+    min-width: 0;
+    min-height: 22px;
+  }
+
+  .outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .use-cases {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    align-items: flex-start;
+  }
+
+  .footer-media {
+    justify-content: flex-start;
+  }
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.top-bar .eyebrow {
+  margin-bottom: 0;
+}
+
+.top-nav {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.top-nav a {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: none;
+}
+
+.top-nav a:hover,
+.top-nav a:focus-visible {
+  border-bottom: 2px solid var(--line);
+  background: none;
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+}
+
+.wrap-top {
+  align-content: start;
+}

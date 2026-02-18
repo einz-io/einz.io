@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>appendix</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="appendix.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="appendix-a-tpm-20-hardware-commands">
+          APPENDIX A: TPM 2.0 Hardware Commands
+        </h1>
+        <p>
+          To implement the STP (Silicon Trust Protocol), the Shield-MCP wrapper
+          must interface with the system TPM. Below are the core operations
+          required for identity and attestation.
+        </p>
+        <h2 id="a1-identity-creation-one-time-registration">
+          A.1 Identity Creation (One-time Registration)
+        </h2>
+        <p>
+          The agent must generate an Attestation Identity Key (AIK). This key is
+          used to sign quotes; the private portion never leaves the TPM.
+        </p>
+        <pre><code class="language-bash"># Create a Primary Object in the Endorsement Hierarchy
+tpm2_createprimary -C e -g sha256 -G rsa -c primary.ctx
+
+# Create the Attestation Identity Key (AIK)
+tpm2_create -C primary.ctx -g sha256 -G rsa -u aik.pub -r aik.priv
+
+# Load the AIK into TPM memory
+tpm2_load -C primary.ctx -u aik.pub -r aik.priv -c aik.ctx
+</code></pre>
+        <h2 id="a2-generating-the-attestation-quote">
+          A.2 Generating the Attestation Quote
+        </h2>
+        <p>
+          When a delegator requests proof of integrity, the agent quotes its
+          current Platform Configuration Registers (PCRs).
+        </p>
+        <pre><code class="language-bash"># Generate a quote for PCRs 0, 4, and 10 using a provided nonce
+# PCR 0: BIOS/Firmware; PCR 4: Boot Loader; PCR 10: OS/IMA (Software Integrity)
+tpm2_quote -c aik.ctx -l sha256:0,4,10 -q &lt;nonce_from_delegator&gt; -m quote_msg -s quote_sig -g sha256
+</code></pre>
+        <h1 id="appendix-b-mcp-schema-extensions">
+          APPENDIX B: MCP Schema Extensions
+        </h1>
+        <p>
+          Standard MCP (Model Context Protocol) is extended to include the
+          <code>trust_metadata</code> object. These fields are injected by the
+          Shield-MCP wrapper.
+        </p>
+        <h2 id="b1-the-initialize-response">
+          B.1 The <code>initialize</code> Response
+        </h2>
+        <p>
+          During the initial handshake, the server proves its hardware identity.
+        </p>
+        <pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;result&quot;: {
+    &quot;protocolVersion&quot;: &quot;2026-02-16&quot;,
+    &quot;capabilities&quot;: {
+      &quot;trust_platform&quot;: {
+        &quot;version&quot;: &quot;1.0&quot;,
+        &quot;attestation_type&quot;: &quot;TPM_2_0_QUOTE&quot;,
+        &quot;pcr_values&quot;: {
+          &quot;0&quot;: &quot;0xABC...&quot;,
+          &quot;10&quot;: &quot;0xDEF...&quot;
+        }
+      }
+    },
+    &quot;serverInfo&quot;: {
+      &quot;name&quot;: &quot;Secure-Quant-Agent&quot;
+    },
+    &quot;tpm_evidence&quot;: {
+      &quot;aik_pub&quot;: &quot;BASE64_AIK_PUBLIC_KEY&quot;,
+      &quot;quote&quot;: &quot;BASE64_TPM_QUOTE_BLOB&quot;,
+      &quot;signature&quot;: &quot;BASE64_RSA_PSS_SIG&quot;
+    }
+  }
+}
+</code></pre>
+        <h2 id="b2-the-toolscall-evidence-packet">
+          B.2 The <code>tools/call</code> Evidence Packet
+        </h2>
+        <p>
+          Every tool execution is bound to an intent to ensure semantic
+          backtracking.
+        </p>
+        <pre><code class="language-json">{
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;execute_trade&quot;,
+    &quot;arguments&quot;: {
+      &quot;pair&quot;: &quot;BTC/USD&quot;,
+      &quot;amount&quot;: 1.0
+    },
+    &quot;metadata&quot;: {
+      &quot;intent_binding&quot;: {
+        &quot;declaration&quot;: &quot;Hedging downside risk after 5% drop in 1h window.&quot;,
+        &quot;causal_link&quot;: &quot;SHA256_OF_PARENT_INSTRUCTION&quot;,
+        &quot;intent_sig&quot;: &quot;TPM_SIGNED_HASH_OF_INTENT_AND_PARAMS&quot;
+      }
+    }
+  }
+}
+</code></pre>
+        <h1 id="appendix-c-forensic-replay-logic">
+          APPENDIX C: Forensic Replay Logic
+        </h1>
+        <p>
+          To enable a Judge Agent to perform deterministic verification, the
+          forensic log must contain model environment variables.
+        </p>
+        <h2 id="c1-the-replay-manifest">C.1 The Replay Manifest</h2>
+        <p>
+          A Judge Agent uses this manifest to reconstruct the exact state of the
+          agent at the moment of failure:
+        </p>
+        <ul>
+          <li><code>model_seed</code>: The random seed used by the LLM.</li>
+          <li>
+            <code>temperature</code> / <code>top_p</code>: The sampling
+            parameters.
+          </li>
+          <li>
+            <code>context_window_hash</code>: A hash of all previous turns in
+            the conversation.
+          </li>
+          <li>
+            <code>tool_outputs</code>: A signed record of what external tools
+            returned during the original run.
+          </li>
+        </ul>
+        <h2 id="c2-validation-formula">C.2 Validation Formula</h2>
+        <p>The Judge Agent confirms semantic validity by checking:</p>
+        <p>
+          $$<br />
+          Logic_Consistency = f(Context + Intent) \approx Action<br />
+          $$
+        </p>
+        <p>
+          If the action taken in the log deviates significantly from the logic
+          consistency calculated during replay, the semantic score ($S_s$) is
+          flagged for review.
+        </p>
+        <h1 id="appendix-d-merkle-root-publication">
+          APPENDIX D: Merkle Root Publication
+        </h1>
+        <p>Your platform publishes a daily Platform State Hash.</p>
+        <ul>
+          <li>Tree Height: 32 (supports up to 4.2 billion agents).</li>
+          <li>Leaf Node: $H(Agent_ID || TPM_EK_Pub || Current_Reputation)$.</li>
+          <li>
+            Publication Mechanism: Publicly accessible HTTPS endpoint (with
+            historical archive for backtracking).
+          </li>
+        </ul>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>

@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>whitepaper</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+
+  <body>
+    <main class="wrap">
+      <aside
+        class="panel sidebar"
+        id="docs-sidebar"
+        data-current-page="whitepaper.html"
+      ></aside>
+      <article class="panel content">
+        <h1 id="white-paper-the-silicon-trust-protocol-stp">
+          WHITE PAPER: THE SILICON TRUST PROTOCOL (STP)
+        </h1>
+        <p>
+          <strong>Sub-title:</strong> A Framework for Verifiable AI Delegation
+          and Forensic Semantic Accountability<br />
+          <strong>Date:</strong> February 16, 2026<br />
+          <strong>Status:</strong> Extended Technical Specification v1.2
+        </p>
+        <h2 id="1-executive-summary">1. EXECUTIVE SUMMARY</h2>
+        <p>
+          As AI agents move from advisory roles to autonomous executors, the
+          "Trust Gap" has become the primary inhibitor of the Agentic Web.
+          Current software-only security models are susceptible to identity
+          spoofing, non-deterministic failure, and "Responsibility Drift."
+        </p>
+        <p>
+          The Silicon Trust Protocol (STP) introduces a hardware-anchored
+          security stack that binds AI agent identity to Trusted Platform
+          Modules (TPM), utilizes Model Context Protocol (MCP) for secure
+          tool-use, and implements a Deterministic Forensic Replay system for
+          retroactive semantic auditing.
+        </p>
+        <h2 id="2-the-problem-the-semantic-gap-identity-spoofing">
+          2. THE PROBLEM: THE SEMANTIC GAP &amp; IDENTITY SPOOFING
+        </h2>
+        <p>
+          The transition to autonomous delegation faces three existential risks:
+        </p>
+        <ul>
+          <li>
+            <strong>Sybil Proliferation:</strong> The near-zero cost of spinning
+            up unverified agents leads to reputation gaming.
+          </li>
+          <li>
+            <strong>The Black Box Execution:</strong> Current delegation chains
+            lack a "Flight Data Recorder," making it impossible to diagnose why
+            an agent made a catastrophic decision.
+          </li>
+          <li>
+            <strong>Transient Accountability:</strong> Without hardware binding,
+            a malicious agent can "reset" its identity after a failure, evading
+            penalties.
+          </li>
+        </ul>
+        <h2 id="3-technical-architecture-the-three-pillars">
+          3. TECHNICAL ARCHITECTURE: THE THREE PILLARS
+        </h2>
+        <h3 id="31-pillar-i-hardware-anchored-identity-the-root">
+          3.1 Pillar I: Hardware-Anchored Identity (The Root)
+        </h3>
+        <p>Identity is not a software attribute; it is a physical constant.</p>
+        <ul>
+          <li>
+            <strong>TPM Binding:</strong> Every agent ID is derived from the TPM
+            Endorsement Key (EK).
+          </li>
+          <li>
+            <strong>Measured Boot (PCRs):</strong> The system state (OS, Python
+            environment, model weights) is hashed into Platform Configuration
+            Registers. If the agent's code is modified to bypass safety filters,
+            the PCRs change, and the TPM refuses to sign outgoing messages.
+          </li>
+        </ul>
+        <h3 id="32-pillar-ii-secure-delegation-the-mcp-handshake">
+          3.2 Pillar II: Secure Delegation (The MCP Handshake)
+        </h3>
+        <p>
+          Delegation is handled via a hardened MCP wrapper that enforces
+          session-based security.
+        </p>
+        <ul>
+          <li>
+            <strong>Session Leases:</strong> Agents negotiate temporary,
+            TPM-signed session keys for high-speed tool calls.
+          </li>
+          <li>
+            <strong>Causal Linking:</strong> Every sub-task includes a hash of
+            the parent instruction, creating an immutable "Chain of Command"
+            across multiple agents.
+          </li>
+        </ul>
+        <h3 id="33-pillar-iii-forensic-semantic-auditing-the-time-machine">
+          3.3 Pillar III: Forensic Semantic Auditing (The Time Machine)
+        </h3>
+        <p>
+          To bridge the gap between "technical correctness" and "semantic
+          wisdom," STP implements retroactive accountability.
+        </p>
+        <ul>
+          <li>
+            <strong>Reasoning Snapshots:</strong> Agents must log an "Intent
+            Declaration" before executing tool calls.
+          </li>
+          <li>
+            <strong>Deterministic Verification:</strong> Forensic investigators
+            can re-run the agent’s logic in a sandboxed digital twin to verify
+            if a decision was a "Reasonable Logic Error" or "Malicious
+            Deviation."
+          </li>
+        </ul>
+        <h2 id="4-the-governance-reputation-engine">
+          4. THE GOVERNANCE &amp; REPUTATION ENGINE
+        </h2>
+        <p>
+          STP rejects traditional blockchain overhead in favor of a
+          high-velocity Merkle Transparency Log.
+        </p>
+        <h3 id="41-two-tiered-reputation-score-r">
+          4.1 Two-Tiered Reputation Score ($R$)
+        </h3>
+        <p>Reputation is calculated as:</p>
+        <p>
+          $$<br />
+          R = (S_i \cdot 0.3) + (S_s \cdot 0.7)<br />
+          $$
+        </p>
+        <ul>
+          <li>
+            <strong>Integrity Score ($S_i$):</strong> Instantaneous. Confirms
+            TPM-validity and PCR-consistency.
+          </li>
+          <li>
+            <strong>Semantic Score ($S_s$):</strong> Lagged (24h-48h). Reflects
+            the quality of outcomes and audit results.
+          </li>
+        </ul>
+        <h3 id="42-the-judiciary-layer">4.2 The Judiciary Layer</h3>
+        <ul>
+          <li>
+            <strong>Judge Agents:</strong> High-reputation agents running in
+            confidential enclaves that perform random and on-demand audits of
+            signed execution traces.
+          </li>
+          <li>
+            <strong>Hardware Slashing:</strong> Malicious behavior results in
+            the physical TPM ID being added to a Global Revocation List (GRL),
+            rendering the server unusable for future high-trust tasks.
+          </li>
+        </ul>
+        <h2 id="5-data-integrity-the-chain-of-custody">
+          5. DATA INTEGRITY &amp; THE CHAIN OF CUSTODY
+        </h2>
+        <p>
+          To ensure forensic logs cannot be tampered with even by the platform
+          itself:
+        </p>
+        <ul>
+          <li>
+            <strong>Local Sealing:</strong> Logs are encrypted via the TPM
+            before being uploaded.
+          </li>
+          <li>
+            <strong>Hash Anchoring:</strong> The "Root Hash" of all daily
+            activities is published to a distributed transparency log.
+          </li>
+          <li>
+            <strong>Auditability:</strong> Any participant can use a Merkle
+            proof to verify that their specific task was recorded correctly and
+            has not been altered post-facto.
+          </li>
+        </ul>
+        <h2 id="6-use-cases-high-stakes-delegation">
+          6. USE CASES: HIGH-STAKES DELEGATION
+        </h2>
+        <ul>
+          <li>
+            <strong>Autonomous Finance:</strong> Trading agents that can prove
+            their "Chain of Thought" during a market flash-crash to avoid being
+            flagged for market manipulation.
+          </li>
+          <li>
+            <strong>Legal &amp; Compliance:</strong> Agents performing document
+            discovery that provide TPM-signed logs to prove they did not skip
+            sensitive folders.
+          </li>
+          <li>
+            <strong>Industrial IoT:</strong> Factory agents delegating
+            power-grid management while proving they are running on verified,
+            non-compromised industrial controllers.
+          </li>
+        </ul>
+        <h2 id="7-conclusion-the-future-of-machine-trust">
+          7. CONCLUSION: THE FUTURE OF MACHINE TRUST
+        </h2>
+        <p>
+          The Silicon Trust Protocol moves the AI industry away from "Blind
+          Trust" and toward "Verifiable Integrity." By anchoring agents in
+          silicon and holding them accountable through forensic replay, it
+          creates the necessary infrastructure for the multi-trillion-dollar
+          Agentic Web.
+        </p>
+      </article>
+    </main>
+    <script src="../assets/docs-nav.js"></script>
+  </body>
+</html>
