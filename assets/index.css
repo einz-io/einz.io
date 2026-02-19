@@ -457,6 +457,26 @@ h1 {
     margin-top: 0.55rem;
   }
 
+  /* cta-group überschreibt alles oben */
+  .cta-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .cta-group .cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px; /* feste Breite statt 100% */
+    max-width: 100%; /* trotzdem safe auf sehr kleinen screens */
+    margin-top: 0; /* margin-top vom base .cta resetten */
+  }
+
+  .cta-group .cta + .cta {
+    margin-top: 0; /* gap des parents übernimmt den Abstand */
+  }
+
   .flow {
     flex-direction: column;
   }
@@ -522,6 +542,17 @@ h1 {
   }
 }
 
+@media (width <= 640px) {
+  .flow {
+    flex-direction: column;
+  }
+
+  /* ADD THIS: */
+  .node {
+    flex: none; /* kein Grow mehr in column-Richtung */
+  }
+}
+
 .wrap-top {
   align-content: start;
 }
@@ -569,4 +600,6 @@ h1 {
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding-block: 0.9rem;
+  min-height: 3rem;
 }
